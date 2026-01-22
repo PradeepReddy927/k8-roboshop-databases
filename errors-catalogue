@@ -1,0 +1,5 @@
+INTERVIEW READY ANSWER
+
+“CreateContainerConfigError occurred because the pod referenced a ConfigMap that did not exist in the same namespace. Kubernetes failed while preparing the container environment variables.”
+
+CreateContainerConfigError occurred because the pod could not find the required ConfigMap in the same namespace. Kubernetes failed while preparing the container configuration, so the container never started
