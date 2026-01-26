@@ -1,4 +1,4 @@
-# normal service, headless service, statefulset, pvc
+# service, headless service, statefulset, pvc
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,11 +56,11 @@ spec:
         volumeMounts:
         - name: rabbitmq
           mountPath: /var/lib/rabbitmq
-          env :
+        env:
         - name: RABBITMQ_DEFAULT_USER
           value: roboshop
         - name: RABBITMQ_DEFAULT_PASS
-          value : roboshop123  
+          value: roboshop123
   # This is PVC
   volumeClaimTemplates:
   - metadata:
