@@ -1,4 +1,4 @@
-# service, headless service, statefulset, pvc
+# normal service, headless service, statefulset, pvc
 apiVersion: v1
 kind: Service
 metadata:
