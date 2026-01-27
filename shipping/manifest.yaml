@@ -1,9 +1,9 @@
 apiVersion: v1
-kind : ConfigMap
-metadata: 
+kind: ConfigMap
+metadata:
   name: shipping
   namespace: roboshop
-data: 
+data:
   CART_ENDPOINT: "cart:8080"
   DB_HOST: "mysql"
 ---
@@ -12,30 +12,31 @@ kind: Deployment
 metadata:
   name: shipping
   namespace: roboshop
-  # Thses are replica set labels
+  # these are replica set labels
   labels:
     project: roboshop
     component: shipping
     tier: backend
-spec: 
+spec:
   replicas: 1
   selector:
-    # These labels are used to select pods
+    # these labels are used to select pods
     matchLabels:
-       project: roboshop
-       component: shipping
-       tier: backend
-  # Pod definition    
+      project: roboshop
+      component: shipping
+      tier: backend
+  # pod definition
   template:
     metadata:
       labels:
         project: roboshop
         component: shipping
         tier: backend
-    spec: 
-      containers: 
+    spec:
+      containers:
       - name: shipping
         image: pradeepreddy90/shipping:v1
+        imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: shipping
@@ -44,39 +45,40 @@ spec:
           containerPort: 8080
         resources:
           requests:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "200m"
+            memory: "256Mi"
           limits:
-            cpu: "100m"
-            memory: "128Mi" 
+            cpu: "400m"
+            memory: "512Mi"
         readinessProbe:
           httpGet:
             path: /health
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
+          initialDelaySeconds: 60
         livenessProbe:
           httpGet:
             path: /health
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
+          initialDelaySeconds: 60
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: shipping
   namespace: roboshop
-spec: 
-  selector: 
-   project: roboshop
-   component: shipping
-   tier: backend
-  ports: 
+spec:
+  selector:
+    project: roboshop
+    component: shipping
+    tier: backend
+  ports:
     - protocol: TCP
-      port: 8080 # service Port
-      targetPort: 8080  # Container Port
-
+      port: 8080 # service port
+      targetPort: 8080 # container port
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -101,4 +103,3 @@ spec:
       target:
         type: Utilization
         averageUtilization: 5 # 70 is the real value
-        
