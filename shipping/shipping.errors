@@ -1,0 +1,2 @@
+I was getting CrashLoopBackOff because I did not add the namespace while creating the ConfigMap.
+After adding the correct namespace to the ConfigMap, the pod was able to access it and the errors were resolved.
